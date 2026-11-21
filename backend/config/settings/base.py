@@ -163,10 +163,10 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Menu photos uploaded in the admin. On servers nginx serves them from app/media/
-# (deploys leave that folder alone).
+# Menu photos uploaded in the admin. On servers MEDIA_ROOT is /srv/NAME/data/media (set by
+# hosting/provision.sh): the only folder the service may write, and deploys never touch it.
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = env.path("MEDIA_ROOT", default=BASE_DIR / "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

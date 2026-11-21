@@ -613,6 +613,7 @@ step_env() {
   env_default DEBUG False
   env_default ALLOWED_HOSTS "$DOMAIN"
   env_default CSRF_TRUSTED_ORIGINS "https://$DOMAIN"
+  env_default MEDIA_ROOT "$ROOT/data/media"   # uploads: data/ is the service's only writable folder
   case $DB in
     # No host in the URL: local socket. PGHOST pins the socket folder (pip's psycopg wheels
     # may default to /tmp, which PrivateTmp hides) and works with any URL parser; an
@@ -1069,9 +1070,9 @@ EOF
         expires 7d;
     }
 
-    # photos uploaded in the admin (MEDIA_ROOT); deploys exclude media/, so they persist
+    # photos uploaded in the admin (MEDIA_ROOT in .env); deploys never touch data/
     location /media/ {
-        alias @APP_DIR@/media/;
+        alias /srv/@NAME@/data/media/;
         expires 7d;
     }
 
