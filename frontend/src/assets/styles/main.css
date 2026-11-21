@@ -1,12 +1,44 @@
 @import "tailwindcss";
 
+/*
+ * Colors: Emboscada uses Paraguay's flag and arms (red, white, blue; gold star, green
+ * laurel), plus warm stone neutrals for the "Capital de la Piedra".
+ * Fonts are system stacks: nothing to download on a slow connection.
+ */
 @theme {
-  --color-primary: #3b82f6;
+  --color-primary: #d52b1e;
+  --color-primary-dark: #a8221a;
+  --color-azul: #0038a8;
+  --color-azul-dark: #00256f;
+  --color-azul-night: #0b1a3d;
+  --color-oro: #fedf00;
+  --color-verde: #009b3a;
+  --color-piedra-50: #faf7f2;
+  --color-piedra-100: #f2ece2;
+  --color-piedra-200: #e3d9c9;
+  --color-piedra-400: #b3a691;
+  --color-piedra-600: #7a6e5c;
+  --color-piedra-800: #4a4136;
+  --color-ink: #1d1a16;
+
   --color-secondary: #64748b;
   --color-success: #22c55e;
   --color-danger: #ef4444;
   --color-warning: #f59e0b;
   --color-info: #06b6d4;
+
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+}
+
+html {
+  color-scheme: only light;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
@@ -20,4 +52,333 @@ body {
 
 #app {
   min-height: 100vh;
+}
+
+@layer components {
+  /* The flag's three bands, the site's signature stripe. */
+  .tricolor {
+    height: 6px;
+    background: linear-gradient(
+      to bottom,
+      var(--color-primary) 0 33.34%,
+      #fff 33.34% 66.67%,
+      var(--color-azul) 66.67% 100%
+    );
+  }
+
+  .site {
+    @apply min-h-screen bg-piedra-50 text-ink;
+  }
+
+  .container-site {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Header */
+  .site-header {
+    @apply sticky top-0 z-30 border-b border-piedra-200 bg-piedra-50/95 backdrop-blur;
+  }
+  .site-header__bar {
+    @apply flex h-14 items-center justify-between gap-4;
+  }
+  .site-header__brand {
+    @apply font-display text-lg font-bold tracking-tight text-azul-dark sm:text-xl;
+  }
+  .site-header__links {
+    @apply flex items-center gap-1 text-sm font-semibold;
+  }
+  .site-header__link {
+    @apply rounded-full px-3 py-1.5 text-piedra-800 transition-colors hover:bg-piedra-100 hover:text-ink;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-oro;
+  }
+  .btn--primary {
+    @apply bg-primary text-white shadow-sm hover:bg-primary-dark;
+  }
+  .btn--ghost {
+    @apply border border-white/40 text-white hover:bg-white/10;
+  }
+  .btn--outline {
+    @apply border border-azul/30 text-azul hover:bg-azul/5;
+  }
+  .btn--whatsapp {
+    @apply bg-verde text-white hover:brightness-95;
+  }
+
+  /* Hero */
+  .hero {
+    @apply relative isolate overflow-hidden bg-azul-night text-white;
+  }
+  .hero--photo {
+    @apply flex min-h-[78vh] items-end sm:min-h-[86vh];
+  }
+  .hero__backdrop {
+    @apply absolute inset-0 -z-20 h-full w-full object-cover;
+  }
+  /* darkens the photo where the text sits so it stays readable */
+  .hero__shade {
+    @apply absolute inset-0 -z-10;
+    background:
+      linear-gradient(to top, rgb(11 26 61 / 0.92), rgb(11 26 61 / 0.35) 55%, rgb(11 26 61 / 0.15)),
+      linear-gradient(to right, rgb(11 26 61 / 0.55), transparent 65%);
+  }
+  .hero__glow {
+    @apply absolute inset-0 -z-10;
+    background:
+      radial-gradient(60rem 30rem at 85% -10%, rgb(213 43 30 / 0.35), transparent 60%),
+      radial-gradient(40rem 30rem at -10% 110%, rgb(0 56 168 / 0.55), transparent 60%);
+  }
+  .hero__inner {
+    @apply py-20 sm:py-28 lg:py-32;
+  }
+  .hero--photo .hero__inner {
+    @apply pt-40 pb-16 sm:pb-24;
+  }
+  .hero__eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold tracking-[0.2em] text-oro uppercase;
+  }
+  .hero__title {
+    @apply mt-4 max-w-3xl font-display text-5xl leading-[1.05] font-bold tracking-tight sm:text-6xl lg:text-7xl;
+    text-shadow: 0 2px 24px rgb(0 0 0 / 0.35);
+  }
+  .hero__tagline {
+    @apply mt-6 max-w-xl text-lg leading-8 text-white/85 sm:text-xl;
+  }
+  .hero__actions {
+    @apply mt-10 flex flex-wrap gap-3;
+  }
+
+  /* Sections */
+  .section {
+    @apply scroll-mt-16 py-16 sm:py-24;
+  }
+  .section--stone {
+    @apply bg-piedra-100;
+  }
+  .section--night {
+    @apply bg-azul-night;
+  }
+  .section__eyebrow {
+    @apply text-xs font-bold tracking-[0.2em] text-primary uppercase;
+  }
+  .section__title {
+    @apply mt-2 font-display text-3xl font-bold tracking-tight text-azul-dark sm:text-4xl;
+  }
+  .section__eyebrow--gold {
+    @apply text-oro;
+  }
+  .section__title--light {
+    @apply text-white;
+  }
+  .section__body {
+    @apply mt-4 max-w-2xl text-base leading-7 text-piedra-800 sm:text-lg sm:leading-8;
+  }
+
+  /* About */
+  .about--photo {
+    @apply grid items-center gap-12 lg:grid-cols-2 lg:gap-16;
+  }
+  .about__figure {
+    @apply relative m-0;
+  }
+  .about__figure::before {
+    /* the flag's stripe peeking out behind the photo */
+    content: "";
+    @apply absolute -right-3 -bottom-3 h-2/3 w-2/3 rounded-3xl;
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0 33.34%,
+      #fff 33.34% 66.67%,
+      var(--color-azul) 66.67% 100%
+    );
+  }
+  .about__image {
+    @apply relative aspect-[4/3] w-full rounded-3xl object-cover shadow-xl lg:aspect-[4/5];
+  }
+
+  /* Gallery */
+  .gallery {
+    @apply -mx-4 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0;
+    scrollbar-width: none;
+  }
+  .gallery__item {
+    @apply relative w-4/5 flex-none snap-center overflow-hidden rounded-2xl sm:w-auto;
+  }
+  .gallery__image {
+    @apply aspect-[4/5] w-full object-cover transition-transform duration-500 hover:scale-105;
+  }
+  .gallery__caption {
+    @apply absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-4 pt-10 pb-3 text-sm font-semibold text-white;
+  }
+
+  /* Featured dishes */
+  .featured-grid {
+    @apply mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4;
+  }
+  .feature-card {
+    @apply flex flex-col overflow-hidden rounded-2xl border border-piedra-200 bg-white shadow-sm transition-shadow hover:shadow-lg;
+  }
+  .feature-card__media {
+    @apply aspect-[4/3] w-full bg-piedra-100 object-cover;
+  }
+  .feature-card__placeholder {
+    @apply flex aspect-[4/3] w-full items-center justify-center bg-azul-night text-oro;
+    background-image: radial-gradient(circle at 30% 20%, rgb(213 43 30 / 0.35), transparent 55%);
+  }
+  .feature-card__body {
+    @apply flex flex-1 flex-col p-5;
+  }
+  .feature-card__title {
+    @apply font-display text-xl font-bold text-ink;
+  }
+  .feature-card__description {
+    @apply mt-2 flex-1 text-sm leading-6 text-piedra-600;
+  }
+  .feature-card__price {
+    @apply mt-4 text-base font-bold text-primary;
+  }
+
+  /* Menu */
+  .menu-nav {
+    @apply sticky top-14 z-20 -mx-4 mt-8 overflow-x-auto border-y border-piedra-200 bg-piedra-50/95 px-4 py-3 backdrop-blur sm:mx-0 sm:rounded-full sm:border sm:px-3;
+    scrollbar-width: none;
+  }
+  .menu-nav__list {
+    @apply flex w-max gap-2;
+  }
+  .menu-nav__link {
+    @apply block rounded-full px-4 py-1.5 text-sm font-semibold whitespace-nowrap text-piedra-800 transition-colors hover:bg-piedra-100;
+  }
+  .menu-nav__link--active {
+    @apply bg-azul text-white hover:bg-azul;
+  }
+  .menu-category {
+    @apply mt-14 scroll-mt-32;
+  }
+  .menu-category__header {
+    @apply flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b-2 border-azul-dark pb-3;
+  }
+  .menu-category__title {
+    @apply font-display text-2xl font-bold text-azul-dark sm:text-3xl;
+  }
+  .menu-category__description {
+    @apply text-sm text-piedra-600;
+  }
+  .menu-list {
+    @apply grid grid-cols-1 gap-x-12 lg:grid-cols-2;
+  }
+  .menu-card {
+    @apply flex gap-4 border-b border-dashed border-piedra-200 py-5;
+  }
+  .menu-card--unavailable {
+    @apply opacity-55;
+  }
+  .menu-card__photo {
+    @apply h-20 w-20 flex-none rounded-xl bg-piedra-100 object-cover sm:h-24 sm:w-24;
+  }
+  .menu-card__body {
+    @apply min-w-0 flex-1;
+  }
+  .menu-card__header {
+    @apply flex items-baseline gap-3;
+  }
+  .menu-card__title {
+    @apply text-base font-bold text-ink sm:text-lg;
+  }
+  .menu-card__leader {
+    @apply min-w-4 flex-1 translate-y-[-0.3em] border-b border-dotted border-piedra-400;
+  }
+  .menu-card__price {
+    @apply text-base font-bold whitespace-nowrap text-primary;
+  }
+  .menu-card__description {
+    @apply mt-1 text-sm leading-6 text-piedra-600;
+  }
+  .badge {
+    @apply ml-2 inline-block rounded-full px-2 py-0.5 align-middle text-[0.7rem] font-bold tracking-wide uppercase;
+  }
+  .badge--featured {
+    @apply bg-oro/30 text-azul-dark;
+  }
+  .badge--unavailable {
+    @apply bg-piedra-200 text-piedra-800;
+  }
+  .menu-note {
+    @apply mt-10 text-center text-sm text-piedra-600;
+  }
+
+  /* Visit */
+  .visit-grid {
+    @apply mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3;
+  }
+  .info-card {
+    @apply rounded-2xl border border-piedra-200 bg-white p-6 shadow-sm;
+  }
+  .info-card__title {
+    @apply flex items-center gap-2 text-xs font-bold tracking-[0.2em] text-primary uppercase;
+  }
+  .info-card__text {
+    @apply mt-3 text-base leading-7 text-ink;
+  }
+  .hours-list {
+    @apply mt-3 divide-y divide-piedra-100;
+  }
+  .hours-list__row {
+    @apply flex justify-between gap-4 py-2 text-sm;
+  }
+  .hours-list__days {
+    @apply font-semibold text-ink;
+  }
+  .hours-list__hours {
+    @apply text-right text-piedra-800;
+  }
+  .contact-list {
+    @apply mt-3 flex flex-col gap-2;
+  }
+  .contact-list__link {
+    @apply inline-flex items-center gap-2 text-base font-semibold text-azul hover:underline;
+  }
+
+  /* Footer */
+  .site-footer {
+    @apply bg-azul-night text-white/70;
+  }
+  .site-footer__inner {
+    @apply flex flex-col gap-4 py-10 text-sm sm:flex-row sm:items-center sm:justify-between;
+  }
+  .site-footer__brand {
+    @apply font-display text-lg font-bold text-white;
+  }
+  .site-footer__staff {
+    @apply text-white/50 hover:text-white;
+  }
+  .site-footer__credits {
+    @apply pb-8 text-xs text-white/50;
+  }
+  .site-footer__credits-toggle {
+    @apply cursor-pointer hover:text-white;
+  }
+  .site-footer__credits-list {
+    @apply mt-3 columns-1 gap-8 space-y-1 sm:columns-2 lg:columns-3;
+  }
+
+  /* Loading and errors */
+  .skeleton {
+    @apply animate-pulse rounded-xl bg-piedra-200;
+  }
+  .alert {
+    @apply rounded-2xl border p-6;
+  }
+  .alert--error {
+    @apply border-primary/30 bg-primary/5;
+  }
+  .alert__title {
+    @apply font-bold text-ink;
+  }
+  .alert__text {
+    @apply mt-1 text-sm text-piedra-800;
+  }
 }

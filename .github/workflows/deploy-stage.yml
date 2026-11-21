@@ -1,0 +1,55 @@
+# Deploy to the stage server: on every push to the stage branch, or by hand from the Actions tab
+# ("Deploy to stage" > Run workflow > pick a branch). Production is never deployed from here.
+#
+# GitHub only sends the commit; the server runs /srv/NAME/bin/ci-deploy, which runs bin/deploy:
+# fetch, test, build, back up, copy live, migrate, restart, health check. The STAGE_SSH_KEY secret
+# can run nothing else. Set up by ./hosting/setup-stage.sh; guide: docs/stage-server.md
+#
+# The stage branch is fixed here and in DEPLOY_BRANCH in hosting/.env.stage: change both together.
+name: Deploy to stage
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch: {}
+
+# One deploy at a time. A running deploy is never cancelled: a newer push waits for it.
+concurrency:
+  group: deploy-stage
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30   # the server stops a deploy after 25
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: hosting/.env.stage
+          sparse-checkout-cone-mode: false
+
+      - name: Deploy ${{ github.ref_name }} (${{ github.sha }})
+        env:
+          SSH_KEY: ${{ secrets.STAGE_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          get() { sed -n "s/^$1=//p" hosting/.env.stage | tail -n 1 | sed 's/[[:space:]][[:space:]]*#.*$//; s/[[:space:]]*$//'; }
+          host=$(get DEPLOY_HOST)
+          host_key=$(get STAGE_HOST_KEY)
+          if [ -z "$host" ] || [ -z "$host_key" ] || [ -z "$SSH_KEY" ]; then
+            echo "::error::Stage isn't set up: run ./hosting/setup-stage.sh (see docs/stage-server.md)"
+            exit 1
+          fi
+          dir=$(mktemp -d)
+          printf '%s\n' "$SSH_KEY" > "$dir/key"
+          chmod 600 "$dir/key"
+          printf '%s %s\n' "${host#*@}" "$host_key" > "$dir/known_hosts"
+          # only this key, and only a server with this host key
+          ssh -F /dev/null -i "$dir/key" -o IdentitiesOnly=yes -o BatchMode=yes \
+              -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$dir/known_hosts" -o GlobalKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=30 -o ServerAliveCountMax=10 \
+              "$host" "$GITHUB_SHA"
+          echo "Deployed \`${GITHUB_SHA::7}\` from \`${GITHUB_REF_NAME}\` to https://$(get DEPLOY_DOMAIN)/" >> "$GITHUB_STEP_SUMMARY"

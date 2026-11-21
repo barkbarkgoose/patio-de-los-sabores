@@ -3,6 +3,12 @@ import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
 
+// dev.py injects the discovered ports so the proxy and API base stay in sync
+// even when the default ports are already in use.
+const port = Number(process.env.PORT) || 5177
+const backendTarget =
+  process.env.VITE_BACKEND_TARGET || process.env.VITE_API_URL || 'http://127.0.0.1:8800'
+
 export default defineConfig({
   plugins: [vue(), tailwindcss()],
   resolve: {
@@ -11,18 +17,28 @@ export default defineConfig({
     }
   },
   server: {
-    port: 5177,
+    port,
+    // dev.py also passes --host so the app is reachable over Tailscale; Vite rejects
+    // unknown Host headers, so allow MagicDNS names (*.ts.net) and Tailscale IPs.
+    host: true,
+    allowedHosts: ['.ts.net'],
     proxy: {
       '/api': {
-        target: 'http://localhost:8800',
+        target: backendTarget,
         changeOrigin: true
       },
-      '/admin': {
-        target: 'http://localhost:8800',
+      // the Django admin (ADMIN_URL in backend/.env; update this if you change it)
+      '/django-admin': {
+        target: backendTarget,
         changeOrigin: true
       },
       '/static': {
-        target: 'http://localhost:8800',
+        target: backendTarget,
+        changeOrigin: true
+      },
+      // menu photos uploaded in the admin
+      '/media': {
+        target: backendTarget,
         changeOrigin: true
       }
     }

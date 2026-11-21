@@ -1,0 +1,119 @@
+{
+ "dishes": {
+  "Chipa (4 unidades)": {
+   "file": "dish-chipa-4-unidades.jpg",
+   "credit": "Camdiaz91 · CC BY-SA 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Chipa_paraguaya_reci%C3%A9n_horneada.jpg"
+  },
+  "Chipa guasu": {
+   "file": "dish-chipa-guasu.jpg",
+   "credit": "Amambay T · CC BY-SA 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Paraguayan_chipa_guaz%C3%BA.jpg"
+  },
+  "Sopa paraguaya": {
+   "file": "dish-sopa-paraguaya.jpg",
+   "credit": "Horacio Cambeiro · CC BY-SA 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Sopa_paraguaya_(servida_en_tabla_de_madera).jpg"
+  },
+  "Mbejú": {
+   "file": "dish-mbej.jpg",
+   "credit": "Pelufi · CC BY-SA 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Mbeju_and_cocido.jpg"
+  },
+  "Empanada de carne": {
+   "file": "dish-empanada-de-carne.jpg",
+   "credit": "Overkill53 · CC BY-SA 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Empanada_paraguaya.jpg"
+  },
+  "Empanada de mandi'o": {
+   "file": "dish-empanada-de-mandi-o.jpg",
+   "credit": "Overkill53 · CC BY-SA 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Pastel_Mandioca.jpg"
+  },
+  "Vori vori de gallina": {
+   "file": "dish-vori-vori-de-gallina.jpg",
+   "credit": "Overkill53 · CC BY-SA 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Vor%C3%AD_vor%C3%AD_paraguay.jpg"
+  },
+  "Milanesa a la napolitana": {
+   "file": "dish-milanesa-a-la-napolitana.jpg",
+   "credit": "kimberlykv (Flickr) · CC BY 2.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Milanesa_napolitana.jpg"
+  },
+  "Locro": {
+   "file": "dish-locro.jpg",
+   "credit": "Tubby3 · CC BY-SA 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Locro_(plato_argentino).jpg"
+  },
+  "Costilla de res": {
+   "file": "dish-costilla-de-res.jpg",
+   "credit": "Horacio Cambeiro · CC BY-SA 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Corte_de_asado_de_costilla_y_chorizo_argentino.jpg"
+  },
+  "Medio pollo a la parrilla": {
+   "file": "dish-medio-pollo-a-la-parrilla.jpg",
+   "credit": "Horacio Cambeiro · CC BY-SA 3.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Pollo_asado_a_la_parrilla_con_le%C3%B1a.jpg"
+  },
+  "Chorizo parrillero": {
+   "file": "dish-chorizo-parrillero.jpg",
+   "credit": "Horacio Cambeiro · CC BY 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Chorizos_parrilleros.jpg"
+  },
+  "Parrillada para dos": {
+   "file": "dish-parrillada-para-dos.jpg",
+   "credit": "Horacio Cambeiro · CC BY-SA 3.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Asado_de_cerdo_con_costillas_y_chorizos_al_estilo_argentino_(con_mandioca_hervida_y_ensalada_de_lechuga_y_tomate).jpg"
+  },
+  "Kosereva": {
+   "file": "dish-kosereva.jpg",
+   "credit": "Overkill53 · CC BY-SA 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Koserev%C3%A1.jpg"
+  },
+  "Dulce de mamón con queso Paraguay": {
+   "file": "dish-dulce-de-mam-n-con-queso-paraguay.jpg",
+   "credit": "Horacio Cambeiro · CC BY 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Dulce_de_mam%C3%B3n_misionero_con_queso_(porci%C3%B3n).jpg"
+  },
+  "Flan casero": {
+   "file": "dish-flan-casero.jpg",
+   "credit": "anders pearson from new york, ny · CC BY-SA 2.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Flan_con_dulce_de_leche.jpg"
+  },
+  "Jarra de tereré con yuyos": {
+   "file": "dish-jarra-de-terer-con-yuyos.jpg",
+   "credit": "TitiNicola · CC BY-SA 4.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Terer%C3%A9_-_infusi%C3%B3n_2.jpg"
+  }
+ },
+ "hero": {
+  "file": "hero-a.jpg",
+  "credit": "Camdiaz91 · CC BY-SA 4.0 · Wikimedia Commons",
+  "url": "https://commons.wikimedia.org/wiki/File:Chipa_paraguaya_horne%C3%A1ndose_en_el_tatakua.jpg"
+ },
+ "about": {
+  "file": "about-a.jpg",
+  "credit": "Writin · CC0 · Wikimedia Commons",
+  "url": "https://commons.wikimedia.org/wiki/File:Chipa,_cocido_quemado_y_mbeju.jpg"
+ },
+ "gallery": [
+  {
+   "file": "visit-a.jpg",
+   "credit": "Judas Priest88 · Public domain · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Emboscada_Iglesia.jpg",
+   "caption": "La iglesia de Emboscada"
+  },
+  {
+   "file": "hero-b.jpg",
+   "credit": "Horacio Cambeiro · CC BY-SA 3.0 · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Selecci%C3%B3n_de_chorizos_argentinos_asados_lentamente_sobre_brasas_de_le%C3%B1a_de_anchico_en_Capiov%C3%AD,_Misiones.jpg",
+   "caption": "Parrilla a la leña"
+  },
+  {
+   "file": "visit-b.jpg",
+   "credit": "Judas Priest88 · Public domain · Wikimedia Commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Atrio_de_la_Iglesia_de_Emboscada.jpg",
+   "caption": "El retablo de la iglesia"
+  }
+ ]
+}

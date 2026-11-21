@@ -1,12 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { refreshAccessToken } from '@/services/api'
+import { safeRedirect } from '@/utils/redirect'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
-    component: () => import('@/views/HomeView.vue')
+    component: () => import('@/views/HomeView.vue'),
+    // The restaurant's website: always public and drawn without the app's navbar.
+    meta: { public: true, site: true }
   },
   {
     path: '/login',
@@ -23,9 +27,15 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: () => import('@/views/DashboardView.vue'),
-    meta: { requiresAuth: true }
-  }
+    component: () => import('@/views/DashboardView.vue')
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: () => import('@/views/SettingsView.vue')
+  },
+  // For now every unknown path lands on the public landing page.
+  { path: '/:pathMatch(.*)*', redirect: { name: 'home' } }
 ]
 
 const router = createRouter({
@@ -33,17 +43,39 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, _from, next) => {
+/** A sign-in redirect to a page the server renders (the Django admin), not one of ours. */
+export function isServerPage(redirect: unknown): boolean {
+  const path = safeRedirect(redirect)
+  return path !== null && router.resolve(path).matched.length === 0
+}
+
+// Default-deny: every route needs a session, except the sign-in pages (`requiresGuest`)
+// and, only while the server's REQUIRE_LOGIN is off, routes marked `meta: { public: true }`.
+// A new page is protected until you opt it out. An expired access token is renewed from
+// the refresh token before giving up and showing /login.
+router.beforeEach(async (to) => {
+  // Site pages are open whatever REQUIRE_LOGIN says (their API is public too).
+  if (to.meta.site) return true
+
   const authStore = useAuthStore()
   authStore.loadFromStorage()
 
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next({ name: 'login' })
-  } else if (to.meta.requiresGuest && authStore.isAuthenticated) {
-    next({ name: 'dashboard' })
-  } else {
-    next()
+  if (!authStore.isAuthenticated && !to.meta.requiresGuest) {
+    if (await refreshAccessToken()) authStore.loadFromStorage()
   }
+
+  if (!authStore.isAuthenticated && !to.meta.requiresGuest) {
+    if (to.meta.public) await authStore.loadAuthConfig()
+    if (!(to.meta.public && authStore.requireLogin === false)) {
+      return { name: 'login', query: { redirect: to.fullPath } }
+    }
+  }
+  // Signed-in staff still come to /login on the way to the Django admin: the admin
+  // session is opened by a passkey sign-in.
+  if (to.meta.requiresGuest && authStore.isAuthenticated && !isServerPage(to.query.redirect)) {
+    return { name: 'home' }
+  }
+  return true
 })
 
 export default router

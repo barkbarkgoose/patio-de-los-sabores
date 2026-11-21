@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { firstError } from '@/utils/apiErrors'
 
+const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
+
+onMounted(async () => {
+  await authStore.loadAuthConfig()
+  if (!authStore.allowRegistration) router.replace({ name: 'login' })
+})
 
 const form = ref({
   name: '',
@@ -21,11 +28,12 @@ async function handleSubmit() {
   
   try {
     await authStore.register(form.value)
-    router.push('/dashboard')
+    const redirect = route.query.redirect
+    router.push(typeof redirect === 'string' ? redirect : '/')
   } catch (error: unknown) {
     if (error && typeof error === 'object' && 'response' in error) {
-      const err = error as { response?: { data?: { detail?: string } } }
-      errorMessage.value = err.response?.data?.detail || 'Registration failed. Please try again.'
+      const err = error as { response?: { data?: unknown } }
+      errorMessage.value = firstError(err.response?.data) || 'Registration failed. Please try again.'
     } else {
       errorMessage.value = 'Registration failed. Please try again.'
     }
@@ -80,9 +88,8 @@ async function handleSubmit() {
               id="organization_name"
               v-model="form.organization_name"
               type="text"
-              required
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-              placeholder="Organization name"
+              placeholder="Organization name (optional)"
             />
           </div>
           <div>
