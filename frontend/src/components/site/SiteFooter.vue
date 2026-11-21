@@ -1,24 +1,37 @@
 <script setup lang="ts">
 import type { PhotoCredit } from '@/types/site'
 
-defineProps<{ name: string; city: string; credits: PhotoCredit[] }>()
+interface Props {
+  name: string
+  city: string
+  credits: PhotoCredit[]
+}
+
+defineProps<Props>()
 
 const year = new Date().getFullYear()
 </script>
 
 <template>
   <footer class="site-footer">
-    <div class="tricolor" />
+    <div class="tricolor" aria-hidden="true" />
     <div class="container-site site-footer__inner">
-      <div>
-        <p class="site-footer__brand">{{ name }}</p>
-        <p class="mt-1">{{ city }}</p>
+      <div class="site-footer__identity">
+        <span class="site-footer__star" aria-hidden="true">★</span>
+        <div>
+          <p class="site-footer__brand">{{ name }}</p>
+          <p class="mt-0.5 text-white/80">{{ city }}</p>
+        </div>
       </div>
-      <div class="flex flex-col gap-1 sm:items-end">
-        <p>© {{ year }} {{ name }}</p>
-        <router-link :to="{ name: 'login' }" class="site-footer__staff">Acceso del personal</router-link>
+
+      <div class="flex flex-col gap-1.5 sm:items-end">
+        <p class="text-white/80">© {{ year }} {{ name }}</p>
+        <router-link :to="{ name: 'login' }" class="site-footer__staff">
+          Acceso del personal
+        </router-link>
       </div>
     </div>
+
     <!-- Attribution the photos' licenses require; empty once the restaurant uses its own. -->
     <details v-if="credits.length" class="container-site site-footer__credits">
       <summary class="site-footer__credits-toggle">Créditos de las fotos</summary>
